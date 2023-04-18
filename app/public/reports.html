@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+  <title>Reports</title>
+  <link rel="stylesheet" href="css/site.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+  <!-- /* Bootstrap documentation nav Bar */ -->
+  <div class="container-fluid" >
+      <header class="row" id="headerbar">
+        <img src="img/logo.jpg" alt="logo" />
+          <h1>Oconee County Fire Rescue</h1>
+      </header>
+
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">OCFR</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="members.html">Members</a>
+          <a class="nav-item nav-link" href="certification.html">Certification</a>
+          <a class="nav-item nav-link" href="enrollment.html">Enroll</a>
+          <a class="nav-item nav-link active" href="reports.html">Reports</a>
+        </div>
+      </div>
+    </nav>
+      <main class="row">
+
+        <div class="container">
+          <h3> Reports </h3>
+            <div class="row">
+              <div class="col-md">
+                <div id="recordsReportApp">
+
+<h4> A report that lists members with expired certifications filtered by certification </h4>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect01">Expired Certificates</label>
+                    </div>
+                    <div class="filter">
+                      <select class="custom-select" id="inputGroupSelect01" v-model="filter.certificationID">
+                        <option value="">(all)</option>
+                        <option v-for="r in certificates" :value="r.certificationID">{{r.certificationName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+
+          <table class="table table-sm table-hover table-responsive" id="taskTable">
+            <thead class="thead-dark">
+              <tr>
+                <th>Certification Name</th>
+                <th>Member Name</th>
+                <th>DOB</th>
+                <th>Gender</th>
+                <th>Certification Status</th>
+                <th>certification StartDate</th>
+                <th>Certification EndDate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="p in reports"
+              v-if="filter.certificationID=='' || filter.certificationID==p.certificationID">
+                <td>{{ p.certificationName }}</td>
+                <td>{{ p.firstName }} {{p.lastName}}</td>
+                <td>{{ p.dob }}</td>
+                <td>{{ p.gender }}</td>
+                <td>{{ p.certificationIsActive }}</td>
+                <td>{{ p.certificationStartDate }}</td>
+                <td>{{ p.certificationEndDate }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+
+
+
+          <h4>A report that lists members names by station and radio number, and shows email addresses.</h4>
+
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroup1">Radio Number</label>
+              </div>
+              <div class="filter">
+                <select class="custom-select" id="inputGroup1" v-model="filter.radioNumber">
+                  <option value="">(all)</option>
+                  <option v-for="r in members" :value="r.radioNumber">{{r.radioNumber}}</option>
+                </select>
+              </div>
+
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroup2">Station Number</label>
+              </div>
+              <div class="filter">
+                <select class="custom-select" id="inputGroup2" v-model="filter.stationNumber">
+                  <option value="">(all)</option>
+                  <option v-for="r in members" :value="r.stationNumber">{{r.stationNumber}}</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+
+          <table class="table table-sm table-hover table-responsive" id="taskTable1">
+            <thead class="thead-dark">
+              <tr>
+                <th>Member Name</th>
+                <th>DOB</th>
+                <th>Gender</th>
+                <th>Radio Number</th>
+                <th>Station Number</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="p in reportRadio"
+              v-if="(filter.radioNumber=='' || filter.radioNumber==p.radioNumber) && (filter.stationNumber=='' || filter.stationNumber==p.stationNumber)">
+                <td>{{ p.firstName }} {{p.lastName}}</td>
+                <td>{{ p.dob }}</td>
+                <td>{{ p.gender }}</td>
+                <td>{{ p.radioNumber }}</td>
+                <td>{{ p.stationNumber }}</td>
+                <td>{{ p.email }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          </div>
+
+
+          </div>
+          </div>
+          </div>
+
+
+
+      </main>
+
+      <footer class="row">
+          <p>Oconee County Fire Rescue (OCFR) is a volunteer organization in Oconee County, GA.</p>
+      </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="js/displayExpiredReport.app.js"></script>
+<script src="js/tablesort.min.js" > </script>
+<script>
+new Tablesort(document.getElementById('taskTable'));
+</script>
+<script src="js/tablesort.min.js" > </script>
+<script>
+new Tablesort(document.getElementById('taskTable1'));
+</script>
+
+</body>
+</html>
